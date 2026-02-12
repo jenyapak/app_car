@@ -1,0 +1,11 @@
+<<<<<<< HEAD
+# Auto detect text files and perform LF normalization
+* text=auto
+=======
+# Скрываем нативные файлы из статистики языков GitHub
+android/* linguist-vendored
+ios/* linguist-vendored
+windows/* linguist-vendored
+linux/* linguist-vendored
+macos/* linguist-vendored
+>>>>>>> 696ae20 (Initial commit with gitattributes)
