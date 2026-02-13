@@ -4,4 +4,5 @@ abstract class AppImages {
   static const String googleLogo = 'assets/google_logo.png';
   static const String fbLogo = 'assets/fb_logo.png';
   static const String carLogo = 'assets/car.png';
+  static const String homeScreenPicture = 'assets/home_screen_picture.png';
 }

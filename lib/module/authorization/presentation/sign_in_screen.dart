@@ -1,7 +1,11 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_application_1_app_car/core/base/base_state.dart';
 import 'package:flutter_application_1_app_car/core/config/router/router.gr.dart';
+import 'package:flutter_application_1_app_car/core/enum/state_status.dart';
 import 'package:flutter_application_1_app_car/core/resources/app_images.dart';
+import 'package:flutter_application_1_app_car/module/authorization/presentation/bloc/auth_bloc.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 @RoutePage()
 class SignInScreen extends StatefulWidget {
@@ -77,25 +81,48 @@ class _SignInScreenState extends State<SignInScreen> {
           SizedBox(height: 16),
           Text('Forgot password?', style: TextStyle(fontSize: 11)),
           SizedBox(height: 34),
-          SizedBox(
-            height: 52,
-            child: ElevatedButton(
-              style: ElevatedButton.styleFrom(
-                backgroundColor: Color(0xff2B4C59),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadiusGeometry.circular(10),
+          BlocConsumer<AuthBloc, BaseState<bool>>(
+            listener: (context, state) {
+              if (state.status == StateStatus.success) {
+                context.router.popAndPush(HomeRoute());
+              }
+              if (state.status == StateStatus.error) {
+                ScaffoldMessenger.of(
+                  context,
+                ).showSnackBar(SnackBar(content: Text(state.message ?? '')));
+              }
+            },
+            builder: (context, state) {
+              return SizedBox(
+                height: 52,
+                child: ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Color(0xff2B4C59),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadiusGeometry.circular(10),
+                    ),
+                  ),
+                  onPressed: () {
+                    context.read<AuthBloc>().add(
+                      SingInEvent(
+                        phone: _phoneController.text,
+                        password: _passwordController.text,
+                      ),
+                    );
+                  },
+                  child: state.status == StateStatus.loading
+                      ? CircularProgressIndicator(color: Colors.white)
+                      : Text(
+                          'Log In',
+                          style: TextStyle(
+                            fontSize: 20,
+                            fontWeight: FontWeight.w700,
+                            color: Colors.white,
+                          ),
+                        ),
                 ),
-              ),
-              onPressed: () {},
-              child: Text(
-                'Log In',
-                style: TextStyle(
-                  fontSize: 20,
-                  fontWeight: FontWeight.w700,
-                  color: Colors.white,
-                ),
-              ),
-            ),
+              );
+            },
           ),
           SizedBox(height: 16),
           Center(child: Text('OR')),
@@ -162,6 +189,7 @@ class _SignInScreenState extends State<SignInScreen> {
                     fontSize: 13,
                     fontWeight: FontWeight.w300,
                     color: Color(0xffFCC21B),
+                    fontStyle: FontStyle.italic,
                   ),
                 ),
               ),
