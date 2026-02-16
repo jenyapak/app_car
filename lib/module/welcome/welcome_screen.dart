@@ -13,7 +13,14 @@ class WelcomeScreen extends StatelessWidget {
     return Scaffold(
       body: Stack(
         children: [
-          Image.asset(AppImages.welcomeBg),
+          SizedBox(
+            child: Image.asset(
+              AppImages.welcomeBg,
+              fit: BoxFit.cover,
+              width: double.infinity,
+              height: double.infinity,
+            ),
+          ),
           SizedBox(
             width: double.infinity,
             child: Padding(
