@@ -54,6 +54,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
               ),
             ),
           ),
+          SizedBox(height: 20),
           Text('EMAIL OR PHONE', style: TextStyle(fontSize: 16)),
           SizedBox(height: 8),
           TextField(
