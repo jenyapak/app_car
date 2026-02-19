@@ -37,17 +37,81 @@ class _HomeScreenState extends State<HomeScreen> {
             return Center(child: CircularProgressIndicator());
           }
           if (state.status == StateStatus.error) {
-            return Center(child: Text(state.message ?? 'ПРоизошла ошибка'));
+            return Center(child: Text(state.message ?? 'Произошла ошибка'));
           }
           if (state.status == StateStatus.success) {
             return ListView.builder(
               itemCount: state.model?.length ?? 0,
               itemBuilder: (context, index) {
                 final cars = state.model?[index];
-                return ListTile(
-                  leading: Image.network(state.model?[index].image ?? ''),
-                  title: Text('${cars?.brand}, ${cars?.model}'),
-                  trailing: Text((cars?.available).toString()),
+                return Padding(
+                  padding: const EdgeInsets.all(8),
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      SizedBox(
+                        height: 120,
+                        width: 200,
+                        child: ClipRRect(
+                          borderRadius: BorderRadiusGeometry.circular(8),
+                          child: Image.network(
+                            state.model?[index].image ?? '',
+                            fit: BoxFit.cover,
+                          ),
+                        ),
+                      ),
+                      Expanded(
+                        child: Padding(
+                          padding: const EdgeInsets.only(left: 12.0),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                '${cars?.brand}, ${cars?.model}',
+                                style: const TextStyle(
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                              const SizedBox(height: 2),
+                              Text('Year: ${(cars?.year)}'),
+                              const SizedBox(height: 2),
+                              Text('Price/min: ${(cars?.pricePerMinute)}'),
+                              const SizedBox(height: 2),
+                              Text('Fuel: ${(cars?.fuel)}%'),
+                              const SizedBox(height: 2),
+
+                              RichText(
+                                text: TextSpan(
+                                  style: const TextStyle(
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.w300,
+                                    color: Colors.black,
+                                  ),
+                                  children: [
+                                    const TextSpan(text: 'Status: '),
+                                    TextSpan(
+                                      text: cars?.available == true
+                                          ? 'Available'
+                                          : 'Booked',
+                                      style: TextStyle(
+                                        color: cars?.available == true
+                                            ? Colors.green
+                                            : Colors.red,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+
+                              const SizedBox(height: 2),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
                 );
               },
             );
