@@ -4,6 +4,9 @@ import 'package:flutter_application_1_app_car/module/authorization/data/auth_rep
 import 'package:flutter_application_1_app_car/module/authorization/domain/usecase/sign_in_usecase.dart';
 import 'package:flutter_application_1_app_car/module/authorization/domain/usecase/sign_up_usecase.dart';
 import 'package:flutter_application_1_app_car/module/authorization/presentation/bloc/auth_bloc.dart';
+import 'package:flutter_application_1_app_car/module/home/data/repository/home_repository.dart';
+import 'package:flutter_application_1_app_car/module/home/domain/usecase/get_all_cars_usecase.dart';
+import 'package:flutter_application_1_app_car/module/home/presentation/cubit/get_all_cars_cubit.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 final appRouter = AppRouter();
@@ -26,6 +29,11 @@ class MyApp extends StatelessWidget {
             signUpUsecase: SignUpUsecase(
               authDomainRepository: AuthRepository(),
             ),
+          ),
+        ),
+        BlocProvider(
+          create: (context) => GetAllCarsCubit(
+            getAllCarsUsecase: GetAllCarsUsecase(repository: HomeRepository()),
           ),
         ),
       ],

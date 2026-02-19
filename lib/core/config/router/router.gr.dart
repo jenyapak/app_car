@@ -14,7 +14,7 @@ import 'package:flutter_application_1_app_car/module/authorization/presentation/
     as _i2;
 import 'package:flutter_application_1_app_car/module/authorization/presentation/sign_up_screen.dart'
     as _i3;
-import 'package:flutter_application_1_app_car/module/home/home_screen.dart'
+import 'package:flutter_application_1_app_car/module/home/presentation/home_screen.dart'
     as _i1;
 import 'package:flutter_application_1_app_car/module/welcome/welcome_screen.dart'
     as _i4;
