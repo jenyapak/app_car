@@ -2,10 +2,33 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1_app_car/core/config/router/router.gr.dart';
 import 'package:flutter_application_1_app_car/core/resources/app_images.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 @RoutePage()
-class WelcomeScreen extends StatelessWidget {
+class WelcomeScreen extends StatefulWidget {
   const WelcomeScreen({super.key});
+
+  @override
+  State<WelcomeScreen> createState() => _WelcomeScreenState();
+}
+
+class _WelcomeScreenState extends State<WelcomeScreen> {
+  late final SharedPreferences prefs;
+
+  @override
+  void initState() {
+    checkPhoneNumber();
+    super.initState();
+  }
+
+  void checkPhoneNumber() async {
+    prefs = await SharedPreferences.getInstance();
+    final phone = prefs.getString('PHONE');
+    if (phone != null && phone.isNotEmpty) {
+      // ignore: use_build_context_synchronously
+      context.router.popAndPush(HomeRoute());
+    }
+  }
 
   @override
   Widget build(BuildContext context) {

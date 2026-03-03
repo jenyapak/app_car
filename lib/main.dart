@@ -6,6 +6,7 @@ import 'package:flutter_application_1_app_car/module/authorization/domain/usecas
 import 'package:flutter_application_1_app_car/module/authorization/presentation/bloc/auth_bloc.dart';
 import 'package:flutter_application_1_app_car/module/home/data/repository/home_repository.dart';
 import 'package:flutter_application_1_app_car/module/home/domain/usecase/get_all_cars_usecase.dart';
+import 'package:flutter_application_1_app_car/module/home/presentation/cart/bloc/cart_cubit.dart';
 import 'package:flutter_application_1_app_car/module/home/presentation/cubit/get_all_cars_cubit.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -36,6 +37,10 @@ class MyApp extends StatelessWidget {
             getAllCarsUsecase: GetAllCarsUsecase(repository: HomeRepository()),
           ),
         ),
+        // BlocProvider(
+        //   create: (context) => PutCartToBusketCubit(),
+        // ),
+        BlocProvider(create: (context) => CartCubit()),
       ],
       child: MaterialApp.router(
         routerConfig: appRouter.config(),

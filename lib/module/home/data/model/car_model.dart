@@ -9,9 +9,10 @@ class CarModel extends CarEntity {
     required super.pricePerMinute,
     required super.fuel,
     required super.latitude,
-    required super.longtitude,
+    required super.longitude,
     required super.image,
     required super.available,
+    required super.hours,
   });
 
   factory CarModel.fromJson(Map<String, dynamic> json) {
@@ -23,9 +24,10 @@ class CarModel extends CarEntity {
       pricePerMinute: json['pricePerMinute'] ?? 0,
       fuel: json['fuel'] ?? 0,
       latitude: json['latitude'] ?? 0.0,
-      longtitude: json['longtitude'] ?? 0.0,
+      longitude: json['longitude'] ?? 0.0,
       image: json['image'] ?? '',
       available: json['available'] ?? false,
+      hours: json['hours'] ?? 0,
     );
   }
 }

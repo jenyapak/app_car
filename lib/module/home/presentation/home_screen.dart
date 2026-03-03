@@ -1,9 +1,12 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1_app_car/core/base/base_state.dart';
+import 'package:flutter_application_1_app_car/core/config/router/router.gr.dart';
 import 'package:flutter_application_1_app_car/core/enum/state_status.dart';
 import 'package:flutter_application_1_app_car/module/home/domain/entity/car_entity.dart';
+import 'package:flutter_application_1_app_car/module/home/presentation/cart/bloc/cart_cubit.dart';
 import 'package:flutter_application_1_app_car/module/home/presentation/cubit/get_all_cars_cubit.dart';
+import 'package:flutter_application_1_app_car/module/home/presentation/widgets/map_modal_content.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 @RoutePage()
@@ -24,13 +27,56 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: AppBar(
+        actionsPadding: EdgeInsets.zero,
         backgroundColor: Colors.white,
         title: Text(
           'Home',
           style: TextStyle(fontSize: 30, fontWeight: FontWeight.w700),
         ),
+        actions: [
+          Stack(
+            children: [
+              IconButton(
+                icon: const Icon(
+                  Icons.shopping_cart_outlined,
+                  color: Colors.black,
+                  size: 30,
+                ),
+                onPressed: () {
+                  context.router.push(const BasketRoute());
+                },
+              ),
+              BlocBuilder<CartCubit, CartState>(
+                builder: (context, state) {
+                  return Positioned(
+                    top: 0,
+                    right: 2,
+
+                    child: Container(
+                      padding: EdgeInsets.all(4),
+                      decoration: BoxDecoration(
+                        color: Colors.red,
+                        shape: BoxShape.circle,
+                      ),
+                      child: Text(
+                        state.cartCount.toString(),
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 15,
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
+                    ),
+                  );
+                },
+              ),
+            ],
+          ),
+        ],
       ),
+
       body: BlocBuilder<GetAllCarsCubit, BaseState<List<CarEntity>>>(
         builder: (context, state) {
           if (state.status == StateStatus.loading) {
@@ -50,10 +96,10 @@ class _HomeScreenState extends State<HomeScreen> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       SizedBox(
-                        height: 120,
+                        height: 160,
                         width: 200,
                         child: ClipRRect(
-                          borderRadius: BorderRadiusGeometry.circular(8),
+                          borderRadius: BorderRadius.circular(8),
                           child: Image.network(
                             state.model?[index].image ?? '',
                             fit: BoxFit.cover,
@@ -74,11 +120,11 @@ class _HomeScreenState extends State<HomeScreen> {
                                 ),
                               ),
                               const SizedBox(height: 2),
-                              Text('Year: ${(cars?.year)}'),
+                              Text('Год: ${(cars?.year)}'),
                               const SizedBox(height: 2),
-                              Text('Price/min: ${(cars?.pricePerMinute)}'),
+                              Text('Цена/мин: ${(cars?.pricePerMinute)}'),
                               const SizedBox(height: 2),
-                              Text('Fuel: ${(cars?.fuel)}%'),
+                              Text('Топливо: ${(cars?.fuel)}%'),
                               const SizedBox(height: 2),
 
                               RichText(
@@ -89,11 +135,11 @@ class _HomeScreenState extends State<HomeScreen> {
                                     color: Colors.black,
                                   ),
                                   children: [
-                                    const TextSpan(text: 'Status: '),
+                                    const TextSpan(text: 'Статус: '),
                                     TextSpan(
                                       text: cars?.available == true
-                                          ? 'Available'
-                                          : 'Booked',
+                                          ? 'Свободна'
+                                          : 'Занята',
                                       style: TextStyle(
                                         color: cars?.available == true
                                             ? Colors.green
@@ -106,6 +152,84 @@ class _HomeScreenState extends State<HomeScreen> {
                               ),
 
                               const SizedBox(height: 2),
+                              SizedBox(
+                                width: double.infinity,
+                                child: ElevatedButton(
+                                  onPressed: cars?.available == true
+                                      ? () {
+                                          showDialog(
+                                            context: context,
+                                            builder: (context) => AlertDialog(
+                                              content: SizedBox(
+                                                width: 400,
+                                                height: 400,
+                                                child: MapModalContent(
+                                                  latitude: cars?.latitude ?? 0,
+                                                  longitude:
+                                                      cars?.longitude ?? 0,
+                                                ),
+                                              ),
+                                              actions: [
+                                                ElevatedButton(
+                                                  onPressed: () {
+                                                    if (state.model?[index] !=
+                                                        null) {
+                                                      context
+                                                          .read<CartCubit>()
+                                                          .addCart(
+                                                            state.model![index],
+                                                          );
+                                                      context.router.maybePop();
+                                                    }
+                                                  },
+                                                  child: Text('Add to cart'),
+                                                ),
+                                              ],
+                                            ),
+                                          );
+
+                                          // final isAdded = context
+                                          //     .read<CartCubit>()
+                                          //     .addCart(cars!);
+
+                                          // if (isAdded) {
+                                          //   ScaffoldMessenger.of(
+                                          //     context,
+                                          //   ).showSnackBar(
+                                          //     SnackBar(
+                                          //       content: Text(
+                                          //         '${cars.brand} добавлена в корзину!',
+                                          //       ),
+                                          //       backgroundColor: Colors.green,
+                                          //       duration: const Duration(
+                                          //         seconds: 1,
+                                          //       ),
+                                          //     ),
+                                          //   );
+                                          // } else {
+                                          //   ScaffoldMessenger.of(
+                                          //     context,
+                                          //   ).showSnackBar(
+                                          //     SnackBar(
+                                          //       content: Text(
+                                          //         '${cars.brand} уже есть в корзине',
+                                          //       ),
+                                          //       backgroundColor: Colors.orange,
+                                          //       duration: const Duration(
+                                          //         seconds: 1,
+                                          //       ),
+                                          //     ),
+                                          //   );
+                                          // }
+                                        }
+                                      : null,
+                                  child: Text(
+                                    cars?.available == true
+                                        ? 'Местоположение'
+                                        : 'Занята',
+                                  ),
+                                ),
+                              ),
                             ],
                           ),
                         ),
