@@ -19,9 +19,11 @@ class _BasketScreenState extends State<BasketScreen> {
     final cartBloc = context.watch<CartCubit>();
     return Scaffold(
       appBar: AppBar(
-        title: const Text(
-          'Корзина',
-          style: TextStyle(fontSize: 30, fontWeight: FontWeight.w600),
+        title: Center(
+          child: const Text(
+            'Корзина',
+            style: TextStyle(fontSize: 30, fontWeight: FontWeight.w600),
+          ),
         ),
         backgroundColor: Colors.white,
         foregroundColor: Colors.black,
