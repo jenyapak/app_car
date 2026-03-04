@@ -31,9 +31,11 @@ class _HomeScreenState extends State<HomeScreen> {
       appBar: AppBar(
         actionsPadding: EdgeInsets.zero,
         backgroundColor: Colors.white,
-        title: Text(
-          'Home',
-          style: TextStyle(fontSize: 30, fontWeight: FontWeight.w700),
+        title: Center(
+          child: Text(
+            'Home',
+            style: TextStyle(fontSize: 30, fontWeight: FontWeight.w700),
+          ),
         ),
         actions: [
           Stack(
@@ -97,7 +99,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     children: [
                       SizedBox(
                         height: 160,
-                        width: 200,
+                        width: 185,
                         child: ClipRRect(
                           borderRadius: BorderRadius.circular(8),
                           child: Image.network(
